@@ -1,6 +1,5 @@
-%% create timetable from gdt file
-%% loading the file and extracting the table 
-
+create timetable from gdt file
+loading the file and extracting the table 
 clear
 %gdt
 options = detectImportOptions('ANON_19810211.GDT', 'FileType','text');
@@ -11,14 +10,14 @@ edfFile2 = edfread('HT capno.edf');
 edfFile3 = edfread('GD capno.edf');
 edfFile4 = edfread('WP capno.edf');
 display('loadinf file: done');
-%% removing NaN values
 
+removing NaN values
 %gdt
 T.PaCO2(isnan(T.PaCO2)) = 0; %replace Nan values with 0 so they dont get removed in next step
 gdtfile = T(~any(ismissing(T),2),:);%remove all rows that have missing value or NaN. now we only have the table remaining.
 display('removing NaN: done');
-%% samplingTime and samplePeriod
 
+samplingTime and samplePeriod
 %gdt
 gdtDuration = seconds(duration(gdtfile.Time, 'InputFormat','mm:ss'));%convert to duration
 gdtSamplePeriod = round(mean(diff(gdtDuration)));%difference between the samples and we take the mean of that
@@ -28,14 +27,14 @@ edfDuration = seconds(duration(edfFile1.("Record Time")));
 edfSamplePeriod = round(mean(diff(edfDuration)));
 edfSampleRate = 1/edfSamplePeriod;
 display('initializing vars: done');
-%% convert gdt table to timetable
 
+convert gdt table to timetable
 gdtfile.Time=[];%remove Time collumn
 Time=transpose(seconds(0:gdtSamplePeriod:(height(gdtfile)-1)*gdtSamplePeriod ));%create new time collumn
 gdtTimeTable=table2timetable(gdtfile,'RowTimes',Time);
 display('converting to timetables: done');
-%% Fourier transform and plots 
 
+Fourier transform and plots 
 %gdt
 signalGdt = gdtfile.HR; %the signal you want to convert
 nGdt = length(signalGdt);%signalLength
@@ -76,8 +75,8 @@ ylabel('Power')
 title('Frequency Domain')
 
 display('Fourier transforms: done');
-%% upsample gdt
 
+upsample gdt
 upFactor=edfSampleRate/gdtSampleRate;
 upGdt = interp(signalGdt, upFactor);
 length(upGdt)
@@ -91,10 +90,13 @@ f = (0:n-1)*(up_Fs/n); % frequency range
 Y = fft(upGdt)/n; % Fourier transform
 powerUpGdt = abs(Y); % power spectrum
 display('upsampling gdt: done');
-%% cross correlation
 
+cross correlation
 s1=signalEdf;
+s1=s1-mean(s1);
+%remove dc offset
 s2=upGdt;
+s2=s2-mean(s2);
 
 ax(1) = subplot(2,1,1);
 plot(s1)
@@ -135,7 +137,7 @@ plot(s2)
 ylabel('s_2')
 axis tight
 
-%% plot together
+plot together
 figure
 plot(s1)
 hold on
@@ -145,3 +147,4 @@ xlabel('seconds')
 title('synced EDF end GDT')
 legend('edf','gdt')
 hold off
+
