@@ -134,3 +134,14 @@ ax(2) = subplot(2,1,2);
 plot(s2)
 ylabel('s_2')
 axis tight
+
+%% plot together
+figure
+plot(s1)
+hold on
+plot (s2)
+ylabel('heartrate')
+xlabel('seconds')
+title('synced EDF end GDT')
+legend('edf','gdt')
+hold off
