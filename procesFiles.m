@@ -7,7 +7,6 @@ options = detectImportOptions('ANON_19810211.GDT', 'FileType','text');
 T = readtable('ANON_19810211.GDT', options); 
 %edf
 edfFile1 = edfread('ANONCapno edf export -1.edf');
-edfFile1 = edfFile1(1:find(edfFile1.PR,1,'last'),:);
 edfFile2 = edfread('HT capno.edf');
 edfFile3 = edfread('GD capno.edf');
 edfFile4 = edfread('WP capno.edf');
@@ -50,11 +49,11 @@ xlabel('Time (s)')
 ylabel('Signal Amplitude')
 title('GDT: HR over time')
 
-% subplot(2,1,2)
-% plot(freqRangeGdt,powerGdt)
-% xlabel('Frequency (Hz)')
-% ylabel('Power')
-% title('Frequency Domain')
+subplot(2,1,2)
+plot(freqRangeGdt,powerGdt)
+xlabel('Frequency (Hz)')
+ylabel('Power')
+title('Frequency Domain')
 
 %% edf
 signalEdf = edfFile1.PR; %the signal you want to convert
@@ -70,19 +69,19 @@ xlabel('Time (s)')
 ylabel('Signal Amplitude')
 title('EDF: PR over time')
 
-% subplot(2,1,2)
-% plot(freqRangeEdf,powerEdf)
-% xlabel('Frequency (Hz)')
-% ylabel('Power')
-% title('Frequency Domain')
+subplot(2,1,2)
+plot(freqRangeEdf,powerEdf)
+xlabel('Frequency (Hz)')
+ylabel('Power')
+title('Frequency Domain')
 
 display('Fourier transforms: done');
 %% upsample gdt
 
 upFactor=edfSampleRate/gdtSampleRate;
 upGdt = interp(signalGdt, upFactor);
-% length(upGdt)
-% length(signalGdt)
+length(upGdt)
+length(signalGdt)
 upGDTDuration = interp(gdtDuration, upFactor);
 dt = mean(diff(upGDTDuration)); %foute waarde? foute manier, eventueel interp gebruiken
 up_Fs  = 1 / dt; %sampling frequency gdt
@@ -100,23 +99,22 @@ s1=s1-mean(s1);
 s2=upGdt;
 s2=s2-mean(s2);
 
-% ax(1) = subplot(2,1,1);
-% plot(s1)
-% ylabel('s_1')
-% axis tight
-% 
-% ax(2) = subplot(2,1,2);
-% plot(s2)
-% ylabel('s_2')
-% axis tight
-% 
-% xlabel('Samples')
-% 
-% linkaxes(ax,'x')
+ax(1) = subplot(2,1,1);
+plot(s1)
+ylabel('s_1')
+axis tight
+
+ax(2) = subplot(2,1,2);
+plot(s2)
+ylabel('s_2')
+axis tight
+
+xlabel('Samples')
+
+linkaxes(ax,'x')
 
 [C,lags] = xcorr(s2,s1);
 C = C/max(C);%normalize
-avgC=mean(C)
 
 [M,I] = max(C);
 t = lags(I);
@@ -128,23 +126,24 @@ ylabel('C')
 axis tight
 title('Cross-Correlations')
 
-edf_cor = signalEdf(-t:end);
+edf_cor = s1(-t:end);
+s1_synced= s1(-t:end);
 
-% ax(1) = subplot(2,1,1);
-% plot(edf_cor)
-% ylabel('s_1')
-% axis tight
-% 
-% ax(2) = subplot(2,1,2);
-% plot(s2)
-% ylabel('s_2')
-% axis tight
+ax(1) = subplot(2,1,1);
+plot(edf_cor)
+ylabel('s_1')
+axis tight
+
+ax(2) = subplot(2,1,2);
+plot(s2)
+ylabel('s_2')
+axis tight
 %% plot together
 
 figure
 plot(edf_cor)
 hold on
-plot (upGdt)
+plot (s2)
 ylabel('heartrate')
 xlabel('seconds')
 title('synced EDF end GDT')
@@ -170,4 +169,8 @@ minTimeGdt = find(s2 == minValueGdt)
 
 %% write to csv
 
-%csvwrite(re)
+signals = [signalEdf; signalGdt; edf_cor,upGdt];  % Assuming each signal is a row vector
+signalNames = {'Edf', 'Gdt', 'Edf synced','Gdt upsampled+synced'};
+
+signalTable = array2table(signals, 'VariableNames', signalNames);
+writetable(signalTable, 'signals.xlsx', 'Sheet', 1);
