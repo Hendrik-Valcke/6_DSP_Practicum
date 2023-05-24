@@ -7,6 +7,7 @@ options = detectImportOptions('ANON_19810211.GDT', 'FileType','text');
 T = readtable('ANON_19810211.GDT', options); 
 %edf
 edfFile1 = edfread('ANONCapno edf export -1.edf');
+edfFile1 = edfFile1(1:find(edfFile1.PR,1,'last'),:); %remove zeros from end of file
 edfFile2 = edfread('HT capno.edf');
 edfFile3 = edfread('GD capno.edf');
 edfFile4 = edfread('WP capno.edf');
@@ -126,7 +127,7 @@ ylabel('C')
 axis tight
 title('Cross-Correlations')
 
-edf_cor = s1(-t:end);
+edf_cor = signalEdf(-t:end);
 s1_synced= s1(-t:end);
 
 ax(1) = subplot(2,1,1);
