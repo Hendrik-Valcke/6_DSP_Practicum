@@ -3,8 +3,8 @@
 
 clear
 %gdt
-options = detectImportOptions('WP ergospiro.GDT', 'FileType','text');
-T = readtable('WP ergospiro.GDT', options); 
+options = detectImportOptions('HT ergospirometrie.GDT', 'FileType','text');
+T = readtable('HT ergospirometrie.GDT', options); 
 %edf
 
 edfFile1 = edfread('ANONCapno edf export -1.edf');
@@ -12,7 +12,7 @@ edfFile2 = edfread('HT capno.edf');
 edfFile3 = edfread('GD capno.edf');
 edfFile4 = edfread('WP capno.edf');
 
-edfFile = edfFile4(1:find(edfFile4.PR,1,'last'),:); %remove zeros from end of file
+edfFile = edfFile2(1:find(edfFile2.PR,1,'last'),:); %remove zeros from end of file
 
 display('loading file: done');
 %% removing NaN values
@@ -193,8 +193,12 @@ minTimeDiff=minTimeGdt-minTimeEdf
 
 %% write to csv
 
-signals = [signalEdf; signalGdt; edf_cor,upGdt];  % Assuming each signal is a row vector
-signalNames = {'Edf', 'Gdt', 'Edf synced','Gdt upsampled+synced'};
+maxLen = max([numel(edf_cor), numel(upGdt)]);
+[fileName,path] = uiputfile('*.xlsx')
 
-signalTable = array2table(signals, 'VariableNames', signalNames);
-writetable(signalTable, 'signals.xlsx', 'Sheet', 1);
+% Convert vectors to cell arrays with NaN padding
+cellVector1 = num2cell([edf_cor; NaN(maxLen - numel(edf_cor), 1)]);
+cellVector2 = num2cell([upGdt; NaN(maxLen - numel(upGdt), 1)]);
+signalNames = { 'Edf synced','Gdt upsampled+synced'};
+signalTable = table(cellVector1, cellVector2, 'VariableNames', signalNames);
+writetable(signalTable, strcat(path,fileName), 'Sheet', 1);
