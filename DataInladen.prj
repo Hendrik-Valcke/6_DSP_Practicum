@@ -1,17 +1,17 @@
 <deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
-  <configuration file="D:\Universiteit_Antwerpen\6_Digital_Signal_Processing\6_DSP_Practicum\DataInladen.prj" location="D:\Universiteit_Antwerpen\6_Digital_Signal_Processing\6_DSP_Practicum" name="DataInladen" target="target.ezdeploy.standalone" target-name="Application Compiler">
-    <param.appname>EDFenGDTdataverwerken</param.appname>
+  <configuration file="C:\Users\abe13\Documents\GitHub\6_DSP_Practicum\DataInladen.prj" location="C:\Users\abe13\Documents\GitHub\6_DSP_Practicum" name="DataInladen" target="target.ezdeploy.standalone" target-name="Application Compiler">
+    <param.appname>DataInladen</param.appname>
     <param.icon />
     <param.icons />
     <param.version>1.0</param.version>
-    <param.authnamewatermark>Langbeen M,Wijgaerts M,Valcke H, Opstal A,</param.authnamewatermark>
-    <param.email>matti.langbeen@student.uantwerpen.be, maxim.wijgaerts@student.uantwerpen.be, hendrik.valcke@student.uantwerpen.be, abe.vanopstal@student.uantwerpen.be</param.email>
-    <param.company>UAntwerpen</param.company>
+    <param.authnamewatermark />
+    <param.email />
+    <param.company />
     <param.summary />
     <param.description />
     <param.screenshot />
     <param.guid />
-    <param.installpath.string>\UAntwerpen\EDFenGDTdataverwerken\</param.installpath.string>
+    <param.installpath.string>\DataInladen\</param.installpath.string>
     <param.installpath.combo>option.installpath.programfiles</param.installpath.combo>
     <param.logo />
     <param.install.notes />
@@ -46,6 +46,9 @@
       <param.icon />
       <param.icons />
       <param.version />
+      <param.authnamewatermark />
+      <param.email />
+      <param.company />
       <param.summary />
       <param.description />
       <param.screenshot />
@@ -83,51 +86,14 @@
     <fileset.package />
     <fileset.depfun />
     <build-deliverables>
-      <file location="${PROJECT_ROOT}\DataInladen\for_testing" name="readme.txt" optional="true">D:\Universiteit_Antwerpen\6_Digital_Signal_Processing\6_DSP_Practicum\DataInladen\for_testing\readme.txt</file>
-      <file location="${PROJECT_ROOT}\DataInladen\for_testing" name="splash.png" optional="false">D:\Universiteit_Antwerpen\6_Digital_Signal_Processing\6_DSP_Practicum\DataInladen\for_testing\splash.png</file>
-      <file location="${PROJECT_ROOT}\DataInladen\for_testing" name="EDFenGDTdataverwerken.exe" optional="false">D:\Universiteit_Antwerpen\6_Digital_Signal_Processing\6_DSP_Practicum\DataInladen\for_testing\EDFenGDTdataverwerken.exe</file>
+      <file location="${PROJECT_ROOT}\DataInladen\for_testing" name="readme.txt" optional="true">C:\Users\abe13\Documents\GitHub\6_DSP_Practicum\DataInladen\for_testing\readme.txt</file>
+      <file location="${PROJECT_ROOT}\DataInladen\for_testing" name="DataInladen.exe" optional="false">C:\Users\abe13\Documents\GitHub\6_DSP_Practicum\DataInladen\for_testing\DataInladen.exe</file>
+      <file location="${PROJECT_ROOT}\DataInladen\for_testing" name="splash.png" optional="false">C:\Users\abe13\Documents\GitHub\6_DSP_Practicum\DataInladen\for_testing\splash.png</file>
     </build-deliverables>
     <workflow />
     <matlab>
       <root>C:\Program Files\MATLAB\R2023a</root>
-      <toolboxes>
-        <toolbox name="matlabcoder" />
-        <toolbox name="embeddedcoder" />
-        <toolbox name="gpucoder" />
-        <toolbox name="fixedpoint" />
-        <toolbox name="matlabhdlcoder" />
-        <toolbox name="neuralnetwork" />
-      </toolboxes>
-      <toolbox>
-        <matlabcoder>
-          <enabled>true</enabled>
-        </matlabcoder>
-      </toolbox>
-      <toolbox>
-        <embeddedcoder>
-          <enabled>true</enabled>
-        </embeddedcoder>
-      </toolbox>
-      <toolbox>
-        <gpucoder>
-          <enabled>true</enabled>
-        </gpucoder>
-      </toolbox>
-      <toolbox>
-        <fixedpoint>
-          <enabled>true</enabled>
-        </fixedpoint>
-      </toolbox>
-      <toolbox>
-        <matlabhdlcoder>
-          <enabled>true</enabled>
-        </matlabhdlcoder>
-      </toolbox>
-      <toolbox>
-        <neuralnetwork>
-          <enabled>true</enabled>
-        </neuralnetwork>
-      </toolbox>
+      <toolboxes />
     </matlab>
     <platform>
       <unix>false</unix>
